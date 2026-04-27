@@ -1,28 +1,25 @@
-# API Express - Entrega
+# API Express
 
 ## Rutas
 
-### PRODUCTOS
-GET /productos
-GET /productos/:id
-POST /productos
-PUT /productos/:id
-DELETE /productos/:id
+### Productos
+- `GET /productos`
+- `GET /productos/:id`
+- `POST /productos`
+- `PUT /productos/:id`
+- `DELETE /productos/:id`
 
-### USUARIOS
-GET /usuarios
-GET /usuarios/:id
-POST /usuarios
+### Usuarios
+- `GET /usuarios`
+- `GET /usuarios/:id`
+- `POST /usuarios`
 
-### VENTAS
-GET /ventas
-GET /ventas/:id
-POST /ventas
+### Ventas
+- `GET /ventas`
+- `GET /ventas/:id`
+- `POST /ventas`
 
-## Cómo ejecutar
+## Ejecución
+```bash
 npm install
 node app.js
-
-## Notas
-- Se implementa integridad de datos en DELETE de productos
-- No se permite eliminar productos asociados a ventas
