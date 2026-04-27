@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "nombre": "Notebook Lenovo IdeaPad 3",
+    "desc": "Notebook 15.6 pulgadas, Intel Core i5, 8GB RAM, 512GB SSD, Windows 11",
+    "precio": 850000,
+    "imagen": "lenovo-ideapad3.jpg",
+    "stock": 12,
+    "disponible": true
+  },
+  {
+    "id": 2,
+    "nombre": "Mouse Logitech M90",
+    "desc": "Mouse óptico USB, 1000 DPI, diseño ambidiestro, cable 1.8m",
+    "precio": 15000,
+    "imagen": "logitech-m90.jpg",
+    "stock": 45,
+    "disponible": true
+  },
+  {
+    "id": 3,
+    "nombre": "Teclado Redragon Kumara K552",
+    "desc": "Teclado mecánico TKL, switches Red, retroiluminación RGB, USB",
+    "precio": 58000,
+    "imagen": "redragon-k552.jpg",
+    "stock": 8,
+    "disponible": true
+  },
+  {
+    "id": 4,
+    "nombre": "Monitor Samsung 24\" FHD",
+    "desc": "Monitor LED 24 pulgadas, 1920x1080, 75Hz, panel IPS, HDMI + VGA",
+    "precio": 320000,
+    "imagen": "samsung-24fhd.jpg",
+    "stock": 0,
+    "disponible": false
+  },
+  {
+    "id": 5,
+    "nombre": "Auriculares HyperX Cloud Stinger",
+    "desc": "Auriculares gaming con micrófono abatible, drivers 50mm, compatibles PC y consolas",
+    "precio": 72000,
+    "imagen": "hyperx-stinger.jpg",
+    "stock": 20,
+    "disponible": true
+  }
+]

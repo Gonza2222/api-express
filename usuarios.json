@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Lucía",
+    "apellido": "Fernández",
+    "email": "lucia.fernandez@gmail.com",
+    "contraseña": "hashed_lf2024",
+    "activo": true,
+    "es_admin": false
+  },
+  {
+    "id": 2,
+    "nombre": "Matías",
+    "apellido": "Romero",
+    "email": "matias.romero@hotmail.com",
+    "contraseña": "hashed_mr2024",
+    "activo": true,
+    "es_admin": false
+  },
+  {
+    "id": 3,
+    "nombre": "Valentina",
+    "apellido": "López",
+    "email": "valen.lopez@outlook.com",
+    "contraseña": "hashed_vl2024",
+    "activo": false,
+    "es_admin": false
+  },
+  {
+    "id": 4,
+    "nombre": "Gonzalo",
+    "apellido": "Peralta",
+    "email": "gonza.peralta@gmail.com",
+    "contraseña": "hashed_gp2024",
+    "activo": true,
+    "es_admin": true
+  }
+]

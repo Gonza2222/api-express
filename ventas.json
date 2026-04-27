@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "id_usuario": 1,
+    "fecha": "2024-11-10",
+    "total": 865000,
+    "direccion": "Av. Colón 1234, Córdoba",
+    "entregado": true,
+    "productos": [
+      { "id_producto": 1, "cantidad": 1, "precio_unitario": 850000 },
+      { "id_producto": 2, "cantidad": 1, "precio_unitario": 15000 }
+    ]
+  },
+  {
+    "id": 2,
+    "id_usuario": 2,
+    "fecha": "2024-11-15",
+    "total": 130000,
+    "direccion": "San Martín 456, Rosario",
+    "entregado": false,
+    "productos": [
+      { "id_producto": 3, "cantidad": 1, "precio_unitario": 58000 },
+      { "id_producto": 5, "cantidad": 1, "precio_unitario": 72000 }
+    ]
+  },
+  {
+    "id": 3,
+    "id_usuario": 4,
+    "fecha": "2024-12-01",
+    "total": 702000,
+    "direccion": "Bv. Chacabuco 789, Córdoba",
+    "entregado": true,
+    "productos": [
+      { "id_producto": 5, "cantidad": 2, "precio_unitario": 72000 },
+      { "id_producto": 3, "cantidad": 1, "precio_unitario": 58000 },
+      { "id_producto": 2, "cantidad": 2, "precio_unitario": 15000 },
+      { "id_producto": 4, "cantidad": 1, "precio_unitario": 320000 },
+      { "id_producto": 1, "cantidad": 1, "precio_unitario": 850000 }
+    ]
+  }
+]
