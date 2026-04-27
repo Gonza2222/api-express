@@ -19,6 +19,10 @@ GET /ventas
 GET /ventas/:id
 POST /ventas
 
+## Cómo ejecutar
+npm install
+node app.js
+
 ## Notas
 - Se implementa integridad de datos en DELETE de productos
 - No se permite eliminar productos asociados a ventas
