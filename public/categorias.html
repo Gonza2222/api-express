@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechStore — Categorías</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="navbar-brand">Tech<span>Store</span></span>
+    <ul class="navbar-links">
+      <li><a href="index.html">Productos</a></li>
+      <li><a href="categorias.html" class="activo">Categorías</a></li>
+    </ul>
+    <a href="carrito.html" class="carrito-nav">
+      🛒 Carrito
+      <span id="carrito-badge"></span>
+    </a>
+  </nav>
+
+  <main class="main-container">
+    <div class="page-header">
+      <h1 id="categoria-titulo">Todos los productos</h1>
+      <p>Filtrá por categoría para encontrar lo que buscás</p>
+    </div>
+
+    <div class="filtros-wrap" id="filtros"></div>
+
+    <div class="productos-grid" id="productos-grid">
+      <p class="cargando">Cargando...</p>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="js/categorias.js"></script>
+</body>
+</html>

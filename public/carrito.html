@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechStore — Carrito</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="navbar-brand">Tech<span>Store</span></span>
+    <ul class="navbar-links">
+      <li><a href="index.html">Productos</a></li>
+      <li><a href="categorias.html">Categorías</a></li>
+    </ul>
+    <a href="carrito.html" class="carrito-nav activo">
+      🛒 Carrito
+      <span id="carrito-badge"></span>
+    </a>
+  </nav>
+
+  <main class="main-container">
+    <div class="page-header">
+      <h1>Tu carrito</h1>
+    </div>
+
+    <button class="btn-vaciar" id="btn-vaciar" style="display:none;">
+      🗑 Vaciar carrito
+    </button>
+
+    <div class="carrito-layout">
+      <!-- Lista de ítems -->
+      <div class="carrito-lista" id="carrito-lista"></div>
+
+      <!-- Panel derecho -->
+      <div class="panel-lateral">
+        <div class="total-box">
+          <h3>Total</h3>
+          <div class="total-precio" id="carrito-total">$ 0</div>
+        </div>
+
+        <!-- Formulario de checkout -->
+        <div class="checkout-box" id="checkout-form" style="display:none;">
+          <h3>Datos de entrega</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Ingresá el email con el que estás registrado.
+          </p>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="tu@email.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="direccion">Dirección de entrega</label>
+            <input
+              type="text"
+              id="direccion"
+              class="form-input"
+              placeholder="Ej: Av. Colón 1234, Córdoba"
+            />
+          </div>
+
+          <p class="error-msg" id="error-msg"></p>
+
+          <button class="btn-comprar" id="btn-comprar">
+            Confirmar compra
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmación post-compra -->
+    <div class="confirmacion" id="confirmacion"></div>
+  </main>
+
+  <script type="module" src="js/carritoPage.js"></script>
+</body>
+</html>
