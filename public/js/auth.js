@@ -1,27 +1,31 @@
 // public/js/auth.js
-import { api } from "./api.js";
-
 const CLAVE_USER = "techstore_usuario";
+const CLAVE_TOKEN = "techstore_token";
 
 export const auth = {
   getUsuario() {
     return JSON.parse(localStorage.getItem(CLAVE_USER) || "null");
   },
 
-  guardarUsuario(user) {
-    localStorage.setItem(CLAVE_USER, JSON.stringify(user));
+  getToken() {
+    return localStorage.getItem(CLAVE_TOKEN);
+  },
+
+  guardarSesion(usuario, token) {
+    localStorage.setItem(CLAVE_USER, JSON.stringify(usuario));
+    localStorage.setItem(CLAVE_TOKEN, token);
   },
 
   cerrarSesion() {
     localStorage.removeItem(CLAVE_USER);
+    localStorage.removeItem(CLAVE_TOKEN);
   },
 
   estaLogueado() {
-    return this.getUsuario() !== null;
+    return this.getToken() !== null;
   },
 };
 
-// Actualiza el nav según si hay sesión activa
 export function actualizarNavUsuario() {
   const userNav = document.getElementById("nav-usuario");
   if (!userNav) return;

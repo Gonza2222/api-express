@@ -1,7 +1,9 @@
 // public/js/carrito.js
-// Módulo de carrito con persistencia en localStorage
-
 const CLAVE = "carrito_techstore";
+
+function getId(item) {
+  return item._id || item.id;
+}
 
 export const carrito = {
   obtener() {
@@ -15,7 +17,8 @@ export const carrito = {
 
   agregar(producto) {
     const items = this.obtener();
-    const existe = items.find((i) => i.id === producto.id);
+    const id = getId(producto);
+    const existe = items.find((i) => getId(i) === id);
     if (existe) {
       existe.cantidad += 1;
     } else {
@@ -25,13 +28,13 @@ export const carrito = {
   },
 
   quitar(id) {
-    const items = this.obtener().filter((i) => i.id !== id);
+    const items = this.obtener().filter((i) => getId(i) !== id);
     this.guardar(items);
   },
 
   cambiarCantidad(id, cantidad) {
     const items = this.obtener();
-    const item = items.find((i) => i.id === id);
+    const item = items.find((i) => getId(i) === id);
     if (item) {
       item.cantidad = Math.max(1, cantidad);
       this.guardar(items);
@@ -43,10 +46,7 @@ export const carrito = {
   },
 
   total() {
-    return this.obtener().reduce(
-      (acc, i) => acc + i.precio * i.cantidad,
-      0
-    );
+    return this.obtener().reduce((acc, i) => acc + i.precio * i.cantidad, 0);
   },
 
   cantidad() {
@@ -54,7 +54,6 @@ export const carrito = {
   },
 };
 
-// Actualiza el badge del ícono del carrito en el nav
 export function actualizarBadge() {
   const badge = document.getElementById("carrito-badge");
   if (!badge) return;

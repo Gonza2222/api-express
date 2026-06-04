@@ -60,7 +60,6 @@ function renderCarrito() {
 
   totalEl.textContent = formatPrecio(carrito.total());
 
-  // Mostrar checkout según si está logueado o no
   const user = auth.getUsuario();
   if (user) {
     checkoutSection.innerHTML = `
@@ -86,18 +85,15 @@ function renderCarrito() {
       <div class="checkout-box checkout-login">
         <h3>¿Listo para comprar?</h3>
         <p style="color:var(--text-muted); font-size:0.88rem;">Necesitás iniciar sesión o registrarte para continuar.</p>
-        <a href="login.html" class="btn-comprar" id="btn-ir-login" style="text-align:center; display:block; text-decoration:none;">
+        <a href="login.html" class="btn-comprar" style="text-align:center; display:block; text-decoration:none;">
           Iniciar sesión / Registrarse
         </a>
       </div>`;
-
-    // Guardar que el destino después del login es el carrito
     sessionStorage.setItem("redirect_after_login", "carrito.html");
   }
 
   checkoutSection.style.display = "block";
 
-  // Eventos cantidad y quitar
   listaEl.querySelectorAll(".btn-cantidad").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = parseInt(btn.dataset.id);
@@ -137,13 +133,11 @@ async function comprar(user) {
   try {
     const items = carrito.obtener();
     const venta = {
-      id_usuario: user.id,
-      fecha: new Date().toISOString().split("T")[0],
       total: carrito.total(),
       direccion,
       entregado: false,
       productos: items.map((i) => ({
-        id_producto: i.id,
+        id_producto: i._id || i.id,
         cantidad: i.cantidad,
         precio_unitario: i.precio,
       })),
@@ -160,7 +154,7 @@ async function comprar(user) {
       <div class="confirmacion-box">
         <span class="check-icon">✓</span>
         <h2>¡Compra realizada!</h2>
-        <p>Hola <strong>${user.nombre}</strong>, tu orden <strong>#${resultado.id}</strong> fue registrada.</p>
+        <p>Hola <strong>${user.nombre}</strong>, tu orden fue registrada correctamente.</p>
         <p class="conf-total">${formatPrecio(resultado.total)}</p>
         <p class="conf-dir">📍 ${resultado.direccion}</p>
         <a href="index.html" class="btn-seguir">Seguir comprando</a>

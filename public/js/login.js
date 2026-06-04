@@ -2,7 +2,6 @@
 import { api } from "./api.js";
 import { auth } from "./auth.js";
 
-// Si ya está logueado, redirigir al inicio
 if (auth.estaLogueado()) {
   window.location.href = "index.html";
 }
@@ -14,7 +13,6 @@ const formRegistro = document.getElementById("form-registro");
 const errorLogin = document.getElementById("error-login");
 const errorRegistro = document.getElementById("error-registro");
 
-// ── Tabs ───────────────────────────────────────────────────────
 tabLogin.addEventListener("click", () => {
   tabLogin.classList.add("activo");
   tabRegistro.classList.remove("activo");
@@ -35,21 +33,21 @@ tabRegistro.addEventListener("click", () => {
 document.getElementById("btn-login").addEventListener("click", async () => {
   errorLogin.textContent = "";
   const email = document.getElementById("login-email").value.trim();
+  const contraseña = document.getElementById("login-password").value;
 
-  if (!email) {
-    errorLogin.textContent = "Ingresá tu email.";
+  if (!email || !contraseña) {
+    errorLogin.textContent = "Completá todos los campos.";
     return;
   }
 
   try {
-    const user = await api.buscarUsuarioPorEmail(email);
-    auth.guardarUsuario(user);
-    // Redirigir al carrito si venía de ahí, sino al inicio
+    const { token, usuario } = await api.login(email, contraseña);
+    auth.guardarSesion(usuario, token);
     const destino = sessionStorage.getItem("redirect_after_login") || "index.html";
     sessionStorage.removeItem("redirect_after_login");
     window.location.href = destino;
   } catch (e) {
-    errorLogin.textContent = "Email no encontrado. ¿Querés registrarte?";
+    errorLogin.textContent = e.message;
   }
 });
 
@@ -59,28 +57,20 @@ document.getElementById("btn-registro").addEventListener("click", async () => {
   const nombre = document.getElementById("reg-nombre").value.trim();
   const apellido = document.getElementById("reg-apellido").value.trim();
   const email = document.getElementById("reg-email").value.trim();
+  const contraseña = document.getElementById("reg-password").value;
 
-  if (!nombre || !apellido || !email) {
+  if (!nombre || !apellido || !email || !contraseña) {
     errorRegistro.textContent = "Completá todos los campos.";
     return;
   }
 
-  // Verificar que el email no esté en uso
   try {
-    await api.buscarUsuarioPorEmail(email);
-    errorRegistro.textContent = "Ese email ya está registrado. Iniciá sesión.";
-    return;
-  } catch (_) {
-    // No existe, podemos registrar
-  }
-
-  try {
-    const nuevoUsuario = await api.registrarUsuario({ nombre, apellido, email, activo: true, es_admin: false });
-    auth.guardarUsuario(nuevoUsuario);
+    const { token, usuario } = await api.registro({ nombre, apellido, email, contraseña });
+    auth.guardarSesion(usuario, token);
     const destino = sessionStorage.getItem("redirect_after_login") || "index.html";
     sessionStorage.removeItem("redirect_after_login");
     window.location.href = destino;
   } catch (e) {
-    errorRegistro.textContent = "Error al registrar. Intentá de nuevo.";
+    errorRegistro.textContent = e.message;
   }
 });

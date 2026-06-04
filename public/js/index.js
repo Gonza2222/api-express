@@ -44,7 +44,7 @@ function renderProductos(lista) {
         <p class="card-desc">${p.desc}</p>
         <div class="card-footer">
           <span class="precio">${formatPrecio(p.precio)}</span>
-          <button class="btn-agregar" data-id="${p.id}" ${!p.disponible ? "disabled" : ""}>
+          <button class="btn-agregar" data-id="${p._id}" ${!p.disponible ? "disabled" : ""}>
             ${p.disponible ? "Agregar" : "Agotado"}
           </button>
         </div>
@@ -54,7 +54,7 @@ function renderProductos(lista) {
 
   grid.querySelectorAll(".btn-agregar:not([disabled])").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const prod = todosLosProductos.find((p) => p.id == btn.dataset.id);
+      const prod = todosLosProductos.find((p) => (p._id || p.id) == btn.dataset.id);
       carrito.agregar(prod);
       mostrarToast(`✓ ${prod.nombre} agregado al carrito`);
       btn.classList.add("agregado");
