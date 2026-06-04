@@ -2,7 +2,7 @@
 const CLAVE = "carrito_techstore";
 
 function getId(item) {
-  return item._id || item.id;
+  return String(item._id || item.id);
 }
 
 export const carrito = {
@@ -28,13 +28,13 @@ export const carrito = {
   },
 
   quitar(id) {
-    const items = this.obtener().filter((i) => getId(i) !== id);
+    const items = this.obtener().filter((i) => getId(i) !== String(id));
     this.guardar(items);
   },
 
   cambiarCantidad(id, cantidad) {
     const items = this.obtener();
-    const item = items.find((i) => getId(i) === id);
+    const item = items.find((i) => getId(i) === String(id));
     if (item) {
       item.cantidad = Math.max(1, cantidad);
       this.guardar(items);

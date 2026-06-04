@@ -21,6 +21,10 @@ function iconoPorCategoria(cat) {
   return iconos[cat] || "📦";
 }
 
+function getId(item) {
+  return item._id || item.id;
+}
+
 function renderCarrito() {
   const items = carrito.obtener();
 
@@ -39,8 +43,10 @@ function renderCarrito() {
 
   vaciarBtn.style.display = "inline-flex";
 
-  listaEl.innerHTML = items.map((item) => `
-    <div class="carrito-item" data-id="${item.id}">
+  listaEl.innerHTML = items.map((item) => {
+    const id = getId(item);
+    return `
+    <div class="carrito-item" data-id="${id}">
       <div class="item-info">
         <span class="item-icono">${iconoPorCategoria(item.categoria)}</span>
         <div>
@@ -49,17 +55,42 @@ function renderCarrito() {
         </div>
       </div>
       <div class="item-controles">
-        <button class="btn-cantidad" data-accion="restar" data-id="${item.id}">−</button>
+        <button class="btn-cantidad" data-accion="restar" data-id="${id}">−</button>
         <span class="item-cantidad">${item.cantidad}</span>
-        <button class="btn-cantidad" data-accion="sumar" data-id="${item.id}">+</button>
+        <button class="btn-cantidad" data-accion="sumar" data-id="${id}">+</button>
         <span class="item-subtotal">${formatPrecio(item.precio * item.cantidad)}</span>
-        <button class="btn-quitar" data-id="${item.id}" title="Quitar">✕</button>
+        <button class="btn-quitar" data-id="${id}" title="Quitar">✕</button>
       </div>
-    </div>
-  `).join("");
+    </div>`;
+  }).join("");
 
   totalEl.textContent = formatPrecio(carrito.total());
 
+  // Eventos cantidad y quitar — siempre se agregan
+  listaEl.querySelectorAll(".btn-cantidad").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const item = carrito.obtener().find((i) => getId(i) === id);
+      if (!item) return;
+      if (btn.dataset.accion === "sumar") {
+        carrito.cambiarCantidad(id, item.cantidad + 1);
+      } else {
+        item.cantidad === 1 ? carrito.quitar(id) : carrito.cambiarCantidad(id, item.cantidad - 1);
+      }
+      renderCarrito();
+      actualizarBadge();
+    });
+  });
+
+  listaEl.querySelectorAll(".btn-quitar").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      carrito.quitar(btn.dataset.id);
+      renderCarrito();
+      actualizarBadge();
+    });
+  });
+
+  // Checkout según sesión
   const user = auth.getUsuario();
   if (user) {
     checkoutSection.innerHTML = `
@@ -93,28 +124,6 @@ function renderCarrito() {
   }
 
   checkoutSection.style.display = "block";
-
-  listaEl.querySelectorAll(".btn-cantidad").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const id = parseInt(btn.dataset.id);
-      const item = carrito.obtener().find((i) => i.id === id);
-      if (btn.dataset.accion === "sumar") {
-        carrito.cambiarCantidad(id, item.cantidad + 1);
-      } else {
-        item.cantidad === 1 ? carrito.quitar(id) : carrito.cambiarCantidad(id, item.cantidad - 1);
-      }
-      renderCarrito();
-      actualizarBadge();
-    });
-  });
-
-  listaEl.querySelectorAll(".btn-quitar").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      carrito.quitar(parseInt(btn.dataset.id));
-      renderCarrito();
-      actualizarBadge();
-    });
-  });
 }
 
 async function comprar(user) {
@@ -137,7 +146,7 @@ async function comprar(user) {
       direccion,
       entregado: false,
       productos: items.map((i) => ({
-        id_producto: i._id || i.id,
+        id_producto: getId(i),
         cantidad: i.cantidad,
         precio_unitario: i.precio,
       })),
