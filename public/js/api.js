@@ -1,6 +1,4 @@
 // public/js/api.js
-// Funciones centralizadas para comunicarse con el backend
-
 const BASE = "http://localhost:3000";
 
 export const api = {
@@ -24,6 +22,16 @@ export const api = {
         return r.json();
       }
     ),
+
+  registrarUsuario: (datos) =>
+    fetch(`${BASE}/usuarios`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    }).then(async (r) => {
+      if (!r.ok) throw new Error("Error al registrar");
+      return r.json();
+    }),
 
   // ── Ventas ─────────────────────────────────────────────────
   crearVenta: (venta) =>

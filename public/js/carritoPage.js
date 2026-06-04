@@ -1,19 +1,24 @@
 // public/js/carritoPage.js
 import { api } from "./api.js";
 import { carrito, actualizarBadge } from "./carrito.js";
+import { auth, actualizarNavUsuario } from "./auth.js";
 
 actualizarBadge();
+actualizarNavUsuario();
 
 const listaEl = document.getElementById("carrito-lista");
 const totalEl = document.getElementById("carrito-total");
-const checkoutForm = document.getElementById("checkout-form");
-const btnComprar = document.getElementById("btn-comprar");
+const checkoutSection = document.getElementById("checkout-section");
 const confirmacion = document.getElementById("confirmacion");
-const errorMsg = document.getElementById("error-msg");
 const vaciarBtn = document.getElementById("btn-vaciar");
 
 function formatPrecio(n) {
   return n.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
+}
+
+function iconoPorCategoria(cat) {
+  const iconos = { Notebooks: "💻", Periféricos: "⌨️", Monitores: "🖥️", Audio: "🎧" };
+  return iconos[cat] || "📦";
 }
 
 function renderCarrito() {
@@ -27,17 +32,14 @@ function renderCarrito() {
         <a href="index.html" class="btn-seguir">Ver productos</a>
       </div>`;
     totalEl.textContent = formatPrecio(0);
-    checkoutForm.style.display = "none";
+    checkoutSection.style.display = "none";
     vaciarBtn.style.display = "none";
     return;
   }
 
-  checkoutForm.style.display = "block";
   vaciarBtn.style.display = "inline-flex";
 
-  listaEl.innerHTML = items
-    .map(
-      (item) => `
+  listaEl.innerHTML = items.map((item) => `
     <div class="carrito-item" data-id="${item.id}">
       <div class="item-info">
         <span class="item-icono">${iconoPorCategoria(item.categoria)}</span>
@@ -54,13 +56,48 @@ function renderCarrito() {
         <button class="btn-quitar" data-id="${item.id}" title="Quitar">✕</button>
       </div>
     </div>
-  `
-    )
-    .join("");
+  `).join("");
 
   totalEl.textContent = formatPrecio(carrito.total());
 
-  // Eventos cantidad
+  // Mostrar checkout según si está logueado o no
+  const user = auth.getUsuario();
+  if (user) {
+    checkoutSection.innerHTML = `
+      <div class="checkout-box">
+        <h3>Datos de entrega</h3>
+        <p class="usuario-info">👤 Comprando como <strong>${user.nombre} ${user.apellido}</strong> — <span class="link-logout" id="link-logout">No soy yo</span></p>
+        <div class="form-group">
+          <label for="direccion">Dirección de entrega</label>
+          <input type="text" id="direccion" class="form-input" placeholder="Ej: Av. Colón 1234, Córdoba" />
+        </div>
+        <p class="error-msg" id="error-msg"></p>
+        <button class="btn-comprar" id="btn-comprar">Confirmar compra</button>
+      </div>`;
+
+    document.getElementById("link-logout")?.addEventListener("click", () => {
+      auth.cerrarSesion();
+      window.location.reload();
+    });
+
+    document.getElementById("btn-comprar")?.addEventListener("click", () => comprar(user));
+  } else {
+    checkoutSection.innerHTML = `
+      <div class="checkout-box checkout-login">
+        <h3>¿Listo para comprar?</h3>
+        <p style="color:var(--text-muted); font-size:0.88rem;">Necesitás iniciar sesión o registrarte para continuar.</p>
+        <a href="login.html" class="btn-comprar" id="btn-ir-login" style="text-align:center; display:block; text-decoration:none;">
+          Iniciar sesión / Registrarse
+        </a>
+      </div>`;
+
+    // Guardar que el destino después del login es el carrito
+    sessionStorage.setItem("redirect_after_login", "carrito.html");
+  }
+
+  checkoutSection.style.display = "block";
+
+  // Eventos cantidad y quitar
   listaEl.querySelectorAll(".btn-cantidad").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = parseInt(btn.dataset.id);
@@ -68,18 +105,13 @@ function renderCarrito() {
       if (btn.dataset.accion === "sumar") {
         carrito.cambiarCantidad(id, item.cantidad + 1);
       } else {
-        if (item.cantidad === 1) {
-          carrito.quitar(id);
-        } else {
-          carrito.cambiarCantidad(id, item.cantidad - 1);
-        }
+        item.cantidad === 1 ? carrito.quitar(id) : carrito.cambiarCantidad(id, item.cantidad - 1);
       }
       renderCarrito();
       actualizarBadge();
     });
   });
 
-  // Eventos quitar
   listaEl.querySelectorAll(".btn-quitar").forEach((btn) => {
     btn.addEventListener("click", () => {
       carrito.quitar(parseInt(btn.dataset.id));
@@ -89,43 +121,23 @@ function renderCarrito() {
   });
 }
 
-function iconoPorCategoria(cat) {
-  const iconos = { Notebooks: "💻", Periféricos: "⌨️", Monitores: "🖥️", Audio: "🎧" };
-  return iconos[cat] || "📦";
-}
-
-vaciarBtn?.addEventListener("click", () => {
-  carrito.vaciar();
-  renderCarrito();
-  actualizarBadge();
-});
-
-btnComprar?.addEventListener("click", async () => {
-  errorMsg.textContent = "";
-  const email = document.getElementById("email").value.trim();
+async function comprar(user) {
+  const errorEl = document.getElementById("error-msg");
+  const btn = document.getElementById("btn-comprar");
   const direccion = document.getElementById("direccion").value.trim();
 
-  if (!email || !direccion) {
-    errorMsg.textContent = "Por favor completá todos los campos.";
+  if (!direccion) {
+    errorEl.textContent = "Ingresá una dirección de entrega.";
     return;
   }
 
-  const items = carrito.obtener();
-  if (items.length === 0) {
-    errorMsg.textContent = "El carrito está vacío.";
-    return;
-  }
-
-  btnComprar.disabled = true;
-  btnComprar.textContent = "Procesando...";
+  btn.disabled = true;
+  btn.textContent = "Procesando...";
 
   try {
-    // 1. Buscar usuario por email
-    const usuario = await api.buscarUsuarioPorEmail(email);
-
-    // 2. Armar la venta
+    const items = carrito.obtener();
     const venta = {
-      id_usuario: usuario.id,
+      id_usuario: user.id,
       fecha: new Date().toISOString().split("T")[0],
       total: carrito.total(),
       direccion,
@@ -137,32 +149,34 @@ btnComprar?.addEventListener("click", async () => {
       })),
     };
 
-    // 3. Crear venta en el backend
     const resultado = await api.crearVenta(venta);
-
-    // 4. Vaciar carrito y mostrar confirmación
     carrito.vaciar();
     actualizarBadge();
-    checkoutForm.style.display = "none";
-    listaEl.style.display = "none";
-    document.querySelector(".total-box").style.display = "none";
+
+    document.querySelector(".carrito-layout").style.display = "none";
     vaciarBtn.style.display = "none";
 
     confirmacion.innerHTML = `
       <div class="confirmacion-box">
         <span class="check-icon">✓</span>
         <h2>¡Compra realizada!</h2>
-        <p>Hola <strong>${usuario.nombre}</strong>, tu orden <strong>#${resultado.id}</strong> fue registrada correctamente.</p>
-        <p class="conf-total">Total: ${formatPrecio(resultado.total)}</p>
+        <p>Hola <strong>${user.nombre}</strong>, tu orden <strong>#${resultado.id}</strong> fue registrada.</p>
+        <p class="conf-total">${formatPrecio(resultado.total)}</p>
         <p class="conf-dir">📍 ${resultado.direccion}</p>
         <a href="index.html" class="btn-seguir">Seguir comprando</a>
       </div>`;
     confirmacion.style.display = "flex";
   } catch (err) {
-    errorMsg.textContent = err.message || "Error al procesar la compra.";
-    btnComprar.disabled = false;
-    btnComprar.textContent = "Confirmar compra";
+    document.getElementById("error-msg").textContent = err.message || "Error al procesar.";
+    btn.disabled = false;
+    btn.textContent = "Confirmar compra";
   }
+}
+
+vaciarBtn?.addEventListener("click", () => {
+  carrito.vaciar();
+  renderCarrito();
+  actualizarBadge();
 });
 
 renderCarrito();

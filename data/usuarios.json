@@ -34,5 +34,13 @@
     "contraseña": "hashed_gp2024",
     "activo": true,
     "es_admin": true
+  },
+  {
+    "id": 5,
+    "nombre": "Tony",
+    "apellido": "Stark",
+    "email": "tony@gmail.com",
+    "activo": true,
+    "es_admin": false
   }
 ]

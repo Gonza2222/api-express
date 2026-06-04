@@ -1,8 +1,10 @@
 // public/js/categorias.js
 import { api } from "./api.js";
 import { carrito, actualizarBadge } from "./carrito.js";
+import { actualizarNavUsuario } from "./auth.js";
 
 actualizarBadge();
+actualizarNavUsuario();
 
 const grid = document.getElementById("productos-grid");
 const filtros = document.getElementById("filtros");

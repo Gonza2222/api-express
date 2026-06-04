@@ -6,7 +6,8 @@
     "precio": 850000,
     "imagen": "lenovo-ideapad3.jpg",
     "stock": 12,
-    "disponible": true
+    "disponible": true,
+    "categoria": "Notebooks"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "precio": 15000,
     "imagen": "logitech-m90.jpg",
     "stock": 45,
-    "disponible": true
+    "disponible": true,
+    "categoria": "Periféricos"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "precio": 58000,
     "imagen": "redragon-k552.jpg",
     "stock": 8,
-    "disponible": true
+    "disponible": true,
+    "categoria": "Periféricos"
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "precio": 320000,
     "imagen": "samsung-24fhd.jpg",
     "stock": 0,
-    "disponible": false
+    "disponible": false,
+    "categoria": "Monitores"
   },
   {
     "id": 5,
@@ -42,6 +46,57 @@
     "precio": 72000,
     "imagen": "hyperx-stinger.jpg",
     "stock": 20,
-    "disponible": true
+    "disponible": true,
+    "categoria": "Audio"
+  },
+  {
+    "id": 6,
+    "nombre": "Notebook ASUS VivoBook 15",
+    "desc": "Notebook 15.6 pulgadas, AMD Ryzen 5, 16GB RAM, 512GB SSD, pantalla FHD",
+    "precio": 920000,
+    "imagen": "asus-vivobook15.jpg",
+    "stock": 5,
+    "disponible": true,
+    "categoria": "Notebooks"
+  },
+  {
+    "id": 7,
+    "nombre": "Mouse Pad XL Redragon",
+    "desc": "Mouse pad extendido 800x300mm, superficie de tela, base antideslizante",
+    "precio": 12000,
+    "imagen": "redragon-mousepad.jpg",
+    "stock": 30,
+    "disponible": true,
+    "categoria": "Periféricos"
+  },
+  {
+    "id": 8,
+    "nombre": "Monitor LG 27\" QHD",
+    "desc": "Monitor IPS 27 pulgadas, 2560x1440, 144Hz, AMD FreeSync, HDMI + DisplayPort",
+    "precio": 580000,
+    "imagen": "lg-27qhd.jpg",
+    "stock": 4,
+    "disponible": true,
+    "categoria": "Monitores"
+  },
+  {
+    "id": 9,
+    "nombre": "Parlantes Logitech Z213",
+    "desc": "Sistema 2.1, potencia 7W RMS, subwoofer integrado, control de volumen",
+    "precio": 35000,
+    "imagen": "logitech-z213.jpg",
+    "stock": 15,
+    "disponible": true,
+    "categoria": "Audio"
+  },
+  {
+    "id": 10,
+    "nombre": "Webcam Logitech C920",
+    "desc": "Cámara web Full HD 1080p, micrófono estéreo integrado, compatible con Zoom y Teams",
+    "precio": 48000,
+    "imagen": "logitech-c920.jpg",
+    "stock": 0,
+    "disponible": false,
+    "categoria": "Periféricos"
   }
 ]

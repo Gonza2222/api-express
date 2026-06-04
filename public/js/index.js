@@ -1,8 +1,10 @@
 // public/js/index.js
 import { api } from "./api.js";
 import { carrito, actualizarBadge } from "./carrito.js";
+import { actualizarNavUsuario } from "./auth.js";
 
 actualizarBadge();
+actualizarNavUsuario();
 
 const grid = document.getElementById("productos-grid");
 const busqueda = document.getElementById("busqueda");
@@ -20,14 +22,17 @@ function mostrarToast(msg) {
   setTimeout(() => toast.classList.remove("visible"), 2000);
 }
 
+function iconoPorCategoria(cat) {
+  const iconos = { Notebooks: "💻", Periféricos: "⌨️", Monitores: "🖥️", Audio: "🎧" };
+  return iconos[cat] || "📦";
+}
+
 function renderProductos(lista) {
   if (lista.length === 0) {
     grid.innerHTML = `<p class="sin-resultados">No se encontraron productos.</p>`;
     return;
   }
-  grid.innerHTML = lista
-    .map(
-      (p) => `
+  grid.innerHTML = lista.map((p) => `
     <div class="card ${!p.disponible ? "agotado" : ""}">
       <div class="card-img">
         <span class="categoria-tag">${p.categoria}</span>
@@ -39,19 +44,13 @@ function renderProductos(lista) {
         <p class="card-desc">${p.desc}</p>
         <div class="card-footer">
           <span class="precio">${formatPrecio(p.precio)}</span>
-          <button
-            class="btn-agregar"
-            data-id="${p.id}"
-            ${!p.disponible ? "disabled" : ""}
-          >
+          <button class="btn-agregar" data-id="${p.id}" ${!p.disponible ? "disabled" : ""}>
             ${p.disponible ? "Agregar" : "Agotado"}
           </button>
         </div>
       </div>
     </div>
-  `
-    )
-    .join("");
+  `).join("");
 
   grid.querySelectorAll(".btn-agregar:not([disabled])").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -64,27 +63,23 @@ function renderProductos(lista) {
   });
 }
 
-function iconoPorCategoria(cat) {
-  const iconos = {
-    Notebooks: "💻",
-    Periféricos: "⌨️",
-    Monitores: "🖥️",
-    Audio: "🎧",
-  };
-  return iconos[cat] || "📦";
-}
-
-busqueda.addEventListener("input", () => {
-  const q = busqueda.value.toLowerCase();
+function filtrar() {
+  const q = busqueda.value.toLowerCase().trim();
+  if (q === "") {
+    renderProductos(todosLosProductos);
+    return;
+  }
   renderProductos(
-    todosLosProductos.filter(
-      (p) =>
-        p.nombre.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q) ||
-        p.categoria.toLowerCase().includes(q)
+    todosLosProductos.filter((p) =>
+      p.nombre.toLowerCase().includes(q) ||
+      p.desc.toLowerCase().includes(q) ||
+      p.categoria.toLowerCase().includes(q)
     )
   );
-});
+}
+
+busqueda.addEventListener("input", filtrar);
+busqueda.addEventListener("keyup", filtrar);
 
 async function init() {
   grid.innerHTML = `<p class="cargando">Cargando productos...</p>`;
