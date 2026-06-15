@@ -1,107 +1,106 @@
-TechStore — API Express
+# TechStore - API Express
 
-E-commerce de productos tecnológicos desarrollado con Node.js, Express y MongoDB Atlas.
+E-commerce de productos tecnologicos desarrollado con Node.js, Express y MongoDB Atlas.
 
-Requisitos
+## Requisitos
 
+- Node.js v18 o superior
+- npm
+- Cuenta en MongoDB Atlas (gratuita)
 
-Node.js v18 o superior
-npm
-Cuenta en MongoDB Atlas (gratuita)
+## Instalacion
 
+### 1. Clonar el repositorio
 
-Instalación
-
-
-Clonar el repositorio
-
-
-bashgit clone https://github.com/Gonza2222/api-express
+```bash
+git clone https://github.com/Gonza2222/api-express
 cd api-express
+```
 
+### 2. Instalar dependencias
 
-Instalar dependencias
+```bash
+npm install
+```
 
+### 3. Configurar variables de entorno
 
-bashnpm install
+Crear un archivo `.env` en la raiz basandote en `.env.example`:
 
-
-Crear el archivo .env en la raíz basándote en .env.example
-
-
-MONGO_URI=tu_conexión_mongodb_atlas
+```
+MONGO_URI=tu_conexion_mongodb_atlas
 JWT_SECRET=techstore_secret_2024
 PORT=3000
+```
 
+### 4. Correr el servidor
 
-Correr el servidor
+```bash
+node app.js
+```
 
+### 5. Abrir en el navegador
 
-bashnode app.js
-
-
-Abrir en el navegador
-
-
+```
 http://localhost:3000
+```
 
-Tecnologías
+## Tecnologias
 
+- Node.js + Express
+- MongoDB Atlas + Mongoose
+- bcryptjs
+- jsonwebtoken
+- HTML + CSS + JavaScript vanilla
 
-Node.js + Express
-MongoDB Atlas + Mongoose
-bcryptjs — encriptación de contraseñas
-jsonwebtoken — autenticación JWT
-HTML/CSS/JS vanilla — frontend
+## Rutas de la API
 
+### Autenticacion
 
-Rutas
+| Metodo | Ruta | Descripcion |
+|--------|------|-------------|
+| POST | /registro | Registrar usuario nuevo |
+| POST | /login | Iniciar sesion, devuelve token JWT |
 
-Autenticación
+### Productos
 
+| Metodo | Ruta | Descripcion |
+|--------|------|-------------|
+| GET | /productos | Obtener todos |
+| GET | /productos/:id | Obtener por id |
+| POST | /productos | Crear producto |
+| PUT | /productos/:id | Actualizar producto |
+| DELETE | /productos/:id | Eliminar producto |
 
-POST /registro — registrar usuario nuevo (contraseña encriptada con bcrypt)
-POST /login — iniciar sesión, devuelve token JWT
+### Usuarios
 
+| Metodo | Ruta | Descripcion |
+|--------|------|-------------|
+| GET | /usuarios | Obtener todos |
+| GET | /usuarios/:id | Obtener por id |
+| GET | /usuarios/buscar/email | Buscar por email |
+| POST | /usuarios | Crear usuario |
 
-Productos
+### Ventas
 
+| Metodo | Ruta | Descripcion | Auth |
+|--------|------|-------------|------|
+| GET | /ventas | Obtener todas | No |
+| GET | /ventas/:id | Obtener por id | No |
+| POST | /ventas | Crear orden de compra | JWT |
 
-GET /productos — obtener todos (acepta ?categoria=)
-GET /productos/:id — obtener por id
-POST /productos — crear producto
-PUT /productos/:id — actualizar producto
-DELETE /productos/:id — eliminar (valida existencia e integridad con ventas)
+## Estructura del proyecto
 
-
-Usuarios
-
-
-GET /usuarios — obtener todos (sin contraseña)
-GET /usuarios/:id — obtener por id
-GET /usuarios/buscar/email — buscar por email
-POST /usuarios — crear usuario
-
-
-Ventas
-
-
-GET /ventas — obtener todas
-GET /ventas/:id — obtener por id
-POST /ventas — crear orden de compra (requiere token JWT)
-
-
-Estructura del proyecto
-
+```
 api-express/
-├── data/           # JSONs originales (respaldo)
+├── data/
 ├── middleware/
-│   └── auth.js     # Verificación JWT
+│   └── auth.js
 ├── models/
 │   ├── Producto.js
 │   ├── Usuario.js
 │   └── Venta.js
-├── public/         # Frontend estático
+├── public/
 │   ├── index.html
 │   ├── categorias.html
 │   ├── carrito.html
@@ -111,3 +110,4 @@ api-express/
 ├── .env.example
 ├── app.js
 └── package.json
+```
