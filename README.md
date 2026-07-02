@@ -96,6 +96,15 @@ Volvé a iniciar sesión para que el token incluya el rol de administrador.
 
 ---
 
+## Cuenta de administrador (para evaluación)
+
+Para probar el panel de administración (`/admin.html`) sin tener que registrar y promover un usuario nuevo:
+
+- **Email:** `admin@techstore.com`
+- **Contraseña:** `123456`
+
+---
+
 ## Endpoints de la API
 
 ### Autenticación
