@@ -3,7 +3,7 @@
 Trabajo práctico integrador de **Aplicaciones Web 2**. E-commerce de productos tecnológicos full stack: API REST con Node.js + Express + MongoDB (arquitectura MVC en capas) y un frontend en HTML/CSS/JS vanilla con Bootstrap 5, que permite explorar productos, filtrar por categoría, comprar (carrito + checkout autenticado) y administrar el catálogo desde un panel de administración.
 
 **Repositorio:** https://github.com/Gonza2222/api-express
-**Deploy:** _completar con la URL de Vercel una vez desplegado_
+**Deploy:** https://api-express-five.vercel.app/
 
 ---
 
