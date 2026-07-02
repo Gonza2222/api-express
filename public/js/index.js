@@ -33,20 +33,22 @@ function renderProductos(lista) {
     return;
   }
   grid.innerHTML = lista.map((p) => `
-    <div class="card ${!p.disponible ? "agotado" : ""}">
-      <div class="card-img">
-        <span class="categoria-tag">${p.categoria}</span>
-        <div class="producto-icon">${iconoPorCategoria(p.categoria)}</div>
-        ${!p.disponible ? '<div class="agotado-overlay">Sin stock</div>' : ""}
-      </div>
-      <div class="card-body">
-        <h3 class="card-nombre">${p.nombre}</h3>
-        <p class="card-desc">${p.desc}</p>
-        <div class="card-footer">
-          <span class="precio">${formatPrecio(p.precio)}</span>
-          <button class="btn-agregar" data-id="${p._id}" ${!p.disponible ? "disabled" : ""}>
-            ${p.disponible ? "Agregar" : "Agotado"}
-          </button>
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+      <div class="card ${!p.disponible ? "agotado" : ""}">
+        <div class="card-img">
+          <span class="categoria-tag">${p.categoria}</span>
+          <div class="producto-icon">${iconoPorCategoria(p.categoria)}</div>
+          ${!p.disponible ? '<div class="agotado-overlay">Sin stock</div>' : ""}
+        </div>
+        <div class="card-body">
+          <h3 class="card-nombre">${p.nombre}</h3>
+          <p class="card-desc">${p.desc}</p>
+          <div class="card-footer">
+            <span class="precio">${formatPrecio(p.precio)}</span>
+            <button class="btn-agregar" data-id="${p._id}" ${!p.disponible ? "disabled" : ""}>
+              ${p.disponible ? "Agregar" : "Agotado"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

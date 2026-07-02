@@ -28,8 +28,14 @@ export const auth = {
 
 export function actualizarNavUsuario() {
   const userNav = document.getElementById("nav-usuario");
-  if (!userNav) return;
+  const adminLink = document.getElementById("nav-admin-link");
   const user = auth.getUsuario();
+
+  if (adminLink) {
+    adminLink.style.display = user?.es_admin ? "" : "none";
+  }
+
+  if (!userNav) return;
   if (user) {
     userNav.innerHTML = `
       <span class="nav-saludo">👤 ${user.nombre}</span>

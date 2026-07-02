@@ -1,15 +1,20 @@
 {
   "name": "api-express",
   "version": "1.0.0",
-  "description": "GET /productos\r GET /productos/:id\r POST /productos\r PUT /productos/:id\r DELETE /productos/:id",
-  "main": "app.js",
+  "description": "TechStore - API Express con arquitectura MVC (routes, controllers, models, middlewares, config)",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed:admin": "node scripts/setAdmin.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",

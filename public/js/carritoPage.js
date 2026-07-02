@@ -98,11 +98,11 @@ function renderCarrito() {
         <h3>Datos de entrega</h3>
         <p class="usuario-info">👤 Comprando como <strong>${user.nombre} ${user.apellido}</strong> — <span class="link-logout" id="link-logout">No soy yo</span></p>
         <div class="form-group">
-          <label for="direccion">Dirección de entrega</label>
-          <input type="text" id="direccion" class="form-input" placeholder="Ej: Av. Colón 1234, Córdoba" />
+          <label for="direccion" class="form-label">Dirección de entrega</label>
+          <input type="text" id="direccion" class="form-input form-control" placeholder="Ej: Av. Colón 1234, Córdoba" />
         </div>
         <p class="error-msg" id="error-msg"></p>
-        <button class="btn-comprar" id="btn-comprar">Confirmar compra</button>
+        <button class="btn-comprar btn btn-primary" id="btn-comprar">Confirmar compra</button>
       </div>`;
 
     document.getElementById("link-logout")?.addEventListener("click", () => {
@@ -116,7 +116,7 @@ function renderCarrito() {
       <div class="checkout-box checkout-login">
         <h3>¿Listo para comprar?</h3>
         <p style="color:var(--text-muted); font-size:0.88rem;">Necesitás iniciar sesión o registrarte para continuar.</p>
-        <a href="login.html" class="btn-comprar" style="text-align:center; display:block; text-decoration:none;">
+        <a href="login.html" class="btn-comprar btn btn-primary" style="text-align:center; display:block; text-decoration:none;">
           Iniciar sesión / Registrarse
         </a>
       </div>`;
